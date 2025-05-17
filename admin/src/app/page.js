@@ -1,12 +1,16 @@
 'use client'
-import React from 'react'
-import {useUser} from "@auth0/nextjs-auth0/client";
+import AnimatedHero from '@/app/components/AnimatedHero'
+import AboutSection from '@/app/components/AboutSection'
+import LoginButton from '@/app/components/LoginButton'
+import HomeLayout from '@/app/components/HomeLayout'
 
-function page() {
-  const{user, error, isLoading} = useUser();
+export default function HomePage() {
   return (
-    <a href="/api/auth/login">Login</a>
+    <HomeLayout>
+      <AnimatedHero>
+        <LoginButton />
+      </AnimatedHero>
+      <AboutSection />
+    </HomeLayout>
   )
 }
-
-export default page;
