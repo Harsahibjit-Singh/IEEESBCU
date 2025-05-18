@@ -1,18 +1,23 @@
 'use client'
 import { useUser } from "@auth0/nextjs-auth0/client";
-import Navbar from '../../components/Navbar'
-import Footer from '../../components/Footer'
-import DashboardWelcome from '../../components/DashboardWelcome'
-import DashboardLayout from '../../components/DashboardLayout'
+import DashboardLayout from "@/app/components/DashboardLayout";
+import WelcomeBanner from "@/app/components/WelcomeBanner";
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 
 export default function DashboardPage() {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <DashboardLayout>
       <Navbar />
-      <DashboardWelcome user={user} />
-      {/* Add dashboard content here */}
+      <div className="flex-1 p-6">
+        <WelcomeBanner user={user} />
+        {/* Dashboard content will go here */}
+      </div>
       <Footer />
     </DashboardLayout>
-  )
+  );
 }
