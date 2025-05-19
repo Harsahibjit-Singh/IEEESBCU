@@ -6,6 +6,7 @@ export async function GET() {
   const { data, error } = await supabase.from('executives').select('*');
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
+    console.log("API Response:", data); // 👈 Add this line
   }
   return NextResponse.json(data);
 }
