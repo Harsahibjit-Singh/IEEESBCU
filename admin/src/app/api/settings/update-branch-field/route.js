@@ -4,9 +4,13 @@ import { supabase } from '@/app/lib/supabaseClient';
 export async function PUT(request) {
   try {
     const body = await request.json();
-    const { field_content, field_images } = body;
+    const { field_name, field_content, field_images } = body;
 
-    if (!field_content && !field_images) {
+    if (!field_name) {
+      return new Response(JSON.stringify({ error: 'field_name is required' }), { status: 400 });
+    }
+
+    if (field_content === undefined && field_images === undefined) {
       return new Response(JSON.stringify({ error: 'No data provided to update' }), { status: 400 });
     }
 
@@ -17,7 +21,7 @@ export async function PUT(request) {
     const { data, error } = await supabase
       .from('branch_fields')
       .update(updates)
-      .eq('field_name', 'branch name')
+      .eq('field_name', field_name)
       .select();
 
     if (error) {
@@ -30,12 +34,19 @@ export async function PUT(request) {
   }
 }
 
-export async function GET() {
+export async function GET(request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const field_name = searchParams.get('field_name');
+
+    if (!field_name) {
+      return new Response(JSON.stringify({ error: 'field_name query parameter is required' }), { status: 400 });
+    }
+
     const { data, error } = await supabase
       .from('branch_fields')
       .select('field_content, field_images')
-      .eq('field_name', 'branch name')
+      .eq('field_name', field_name)
       .single();
 
     if (error) {
