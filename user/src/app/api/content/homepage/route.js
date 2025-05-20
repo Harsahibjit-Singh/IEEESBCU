@@ -1,18 +1,28 @@
-import { supabase } from '@/app/lib/supabaseClient.js';
+import { createClient } from '@supabase/supabase-js';
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function GET() {
   try {
     const { data, error } = await supabase
       .from('branch_fields')
-      .select('field_images')
-      .eq('field_name', 'main carousel')
-      .single();
+      .select('*');
 
     if (error) throw error;
-    if (!data) throw new Error('No carousel data found');
+    if (!data || data.length === 0) throw new Error('No branch data found');
 
-    return new Response(JSON.stringify(data.field_images || []), {
+    // Transform data into a more usable format
+    const transformedData = data.reduce((acc, item) => {
+      acc[item.field_name] = {
+        content: item.field_content,
+        images: item.field_images || []
+      };
+      return acc;
+    }, {});
+
+    return new Response(JSON.stringify(transformedData), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
