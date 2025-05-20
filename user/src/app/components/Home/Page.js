@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../ThemeProvider';
 
-const images = [
+const defaultImages = [
   'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
   'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80',
   'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80',
@@ -22,6 +22,32 @@ export default function HomePage() {
   const [current, setCurrent] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const { theme } = useTheme();
+
+  const [images, setImages] = useState(defaultImages);
+  const [isLoading, setIsLoading] = useState(true);
+
+    // Fetch images from Supabase
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch('/api/content/homepage');
+        if (!response.ok) throw new Error('Failed to fetch images');
+        const data = await response.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setImages(data);
+        }
+      } catch (error) {
+        console.error('Error fetching carousel images:', error);
+        // Fallback to default images
+        setImages(defaultImages);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchImages();
+  }, []);
+
 
   // Theme styles
   const themeStyles = {
