@@ -47,24 +47,39 @@ export default function FieldEditor({ fieldName }) {
     }
   };
 
-  if (loading) return <div>Loading {fieldName}...</div>;
+  if (loading) return (
+    <div className="p-4 rounded-lg mb-4 bg-gradient-to-r from-gray-800 to-gray-900 text-gray-300">
+      Loading {fieldName}...
+    </div>
+  );
 
   return (
-    <div className="p-4 border rounded-lg shadow mb-4 bg-white">
-      <h3 className="text-lg font-semibold mb-2 capitalize">{fieldName}</h3>
+    <div className="p-4 rounded-lg shadow-lg mb-4 bg-gradient-to-br from-gray-800 via-gray-700 to-blue-900">
+      <h3 className="text-lg font-semibold mb-2 capitalize text-white">
+        {fieldName}
+      </h3>
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="w-full border p-2 rounded mb-2"
+        className="w-full p-3 rounded mb-3 bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
         rows={4}
+        placeholder={`Enter ${fieldName} content...`}
       />
       <button
         onClick={handleSave}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        className="px-4 py-2 rounded bg-gradient-to-r from-blue-700 to-blue-800 text-white font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg active:scale-95"
       >
-        Save
+        Save Changes
       </button>
-      {status && <p className="mt-2 text-sm text-gray-600">{status}</p>}
+      {status && (
+        <p className={`mt-2 text-sm ${
+          status.includes('Failed') || status.includes('Error') 
+            ? 'text-red-400' 
+            : 'text-blue-300'
+        }`}>
+          {status}
+        </p>
+      )}
     </div>
   );
 }

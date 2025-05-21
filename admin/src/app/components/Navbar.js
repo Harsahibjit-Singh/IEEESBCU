@@ -143,7 +143,7 @@ export default function Navbar() {
               <NavLink href="/dashboard/events" active={activeLink === '/dashboard/events'} style={style}>
                 Events
               </NavLink>
-              <NavLink href="/dashboard/settings" active={activeLink === '/dashboard/settings'} style={style}>
+              <NavLink href="/settings" active={activeLink === '/settings'} style={style}>
                 Settings
               </NavLink>
 
