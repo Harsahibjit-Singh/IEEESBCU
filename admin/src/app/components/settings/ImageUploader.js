@@ -101,4 +101,5 @@ export default function ImageUploader({ fieldName }) {
 }
 
 
-//in frontend write only upload image max of 5 mb not more tahn that
+//in frontend write only upload image max of 10 mb not more than that
+// also make such feature to add more than one image at a time
