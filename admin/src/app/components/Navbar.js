@@ -37,6 +37,7 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <NavLink href="/dashboard">Dashboard</NavLink>
+            <NavLink href="/dashboard">Executives</NavLink>
             <NavLink href="/settings">Settings</NavLink>
             <NavLink href="/dashboard/members">Members</NavLink>
             {user && (
@@ -72,9 +73,10 @@ export default function Navbar() {
           className="md:hidden bg-white"
         >
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <MobileNavLink href="/dashboard">Dashboard</MobileNavLink>
-            <MobileNavLink href="/settings">Settings</MobileNavLink>
-            <MobileNavLink href="/dashboard/members">Members</MobileNavLink>
+            <NavLink href="/dashboard">Dashboard</NavLink>
+            <NavLink href="/executives">Executives</NavLink>
+            <NavLink href="/settings">Settings</NavLink>
+            <NavLink href="/dashboard/members">Members</NavLink>
             {user && (
               <Link
                 href="/api/auth/logout"

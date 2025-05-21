@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useUser } from "@auth0/nextjs-auth0/client";
-import DashboardLayout from "@/app/components/DashboardLayout";
-import WelcomeBanner from "@/app/components/WelcomeBanner";
+import DashboardLayout from "@/app/components/dashboard-components/DashboardLayout";
+import WelcomeBanner from "@/app/components/dashboard-components/WelcomeBanner";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import ExecutiveSearch from "@/app/components/dashboard-components/executives/ExecutiveSearch";
