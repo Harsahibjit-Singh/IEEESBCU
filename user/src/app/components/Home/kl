@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../ThemeProvider';
-
+import Link from 'next/link';
 const images = [
   'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
   'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80',
@@ -347,17 +347,15 @@ export default function HomePage() {
                 Join IEEE today and become part of a global community that's advancing technology for humanity. Gain access to exclusive resources, networking opportunities, and professional development that will accelerate your career.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <a
-                  href="https://www.ieee.org/membership/join/index.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/application"
                   className={`inline-block font-bold px-8 py-4 rounded-xl shadow-lg hover:scale-105 transition-all duration-300 text-lg
                     ${theme === 'light'
                       ? 'bg-black text-white hover:bg-gray-900'
                       : 'bg-white text-blue-600 hover:bg-blue-50'}`}
                 >
                   Join IEEE Now
-                </a>
+                </Link>
                 <a
                   href="#"
                   className={`inline-block border-2 font-bold px-8 py-4 rounded-xl hover:scale-105 transition-all duration-300 text-lg

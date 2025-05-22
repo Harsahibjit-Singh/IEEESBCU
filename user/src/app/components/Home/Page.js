@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../ThemeProvider';
+import Link from 'next/link';
 
 // Default data in case fetch fails
 const defaultData = {
@@ -413,17 +414,16 @@ export default function HomePage() {
                 Join IEEE today and become part of a global community that's advancing technology for humanity. Gain access to exclusive resources, networking opportunities, and professional development that will accelerate your career.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <a
-                  href="https://www.ieee.org/membership/join/index.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`inline-block font-bold px-8 py-4 rounded-xl shadow-lg hover:scale-105 transition-all duration-300 text-lg
-                    ${theme === 'light'
-                      ? 'bg-black text-white hover:bg-gray-900'
-                      : 'bg-white text-blue-600 hover:bg-blue-50'}`}
-                >
-                  Join IEEE Now
-                </a>
+    <Link
+      href="/application"
+      className={`inline-block font-bold px-8 py-4 rounded-xl shadow-lg hover:scale-105 transition-all duration-300 text-lg
+        ${theme === 'light'
+          ? 'bg-black text-white hover:bg-gray-900'
+          : 'bg-white text-blue-600 hover:bg-blue-50'}`}
+      passHref
+    >
+      Join IEEE Now
+    </Link>
                 <a
                   href="#"
                   className={`inline-block border-2 font-bold px-8 py-4 rounded-xl hover:scale-105 transition-all duration-300 text-lg

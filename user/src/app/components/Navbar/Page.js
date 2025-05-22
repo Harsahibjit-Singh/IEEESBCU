@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useTheme } from '../ThemeProvider';
 
+
 export default function Navbar() {
   const [logoImage, setLogoImage] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,9 +12,13 @@ export default function Navbar() {
   const { theme, changeTheme } = useTheme();
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Add this state
 
   useEffect(() => {
     setActiveLink(window.location.pathname);
+    // Check if user is logged in (you'll need to implement your actual auth check)
+    // const loggedIn = checkAuthStatus(); 
+    // setIsLoggedIn(loggedIn);
   }, []);
 
   useEffect(() => {
@@ -49,7 +54,9 @@ export default function Navbar() {
       logoPrimary: 'from-blue-300 via-blue-200 to-blue-100',
       logoSecondary: 'from-blue-200 to-blue-100',
       dropdownText: 'text-white',
-      dropdownActiveText: 'text-white'
+      dropdownActiveText: 'text-white',
+      authButton: 'bg-blue-600 hover:bg-blue-700 text-white',
+      authButtonSecondary: 'bg-gray-700 hover:bg-gray-600 text-white'
     },
     light: {
       nav: 'from-blue-100 via-blue-300 to-blue-400',
@@ -64,7 +71,9 @@ export default function Navbar() {
       logoPrimary: 'from-blue-900 via-blue-700 to-blue-600',
       logoSecondary: 'from-blue-700 to-blue-600',
       dropdownText: 'text-gray-900',
-      dropdownActiveText: 'text-gray-900'
+      dropdownActiveText: 'text-gray-900',
+      authButton: 'bg-blue-600 hover:bg-blue-700 text-white',
+      authButtonSecondary: 'bg-gray-200 hover:bg-gray-300 text-gray-900'
     },
     neon: {
       nav: 'from-purple-900 via-pink-700 to-blue-800',
@@ -79,7 +88,9 @@ export default function Navbar() {
       logoPrimary: 'from-cyan-300 via-pink-200 to-blue-100',
       logoSecondary: 'from-pink-200 via-blue-200 to-cyan-100',
       dropdownText: 'neon-glow',
-      dropdownActiveText: 'neon-glow'
+      dropdownActiveText: 'neon-glow',
+      authButton: 'bg-black/70 hover:bg-black neon-glow',
+      authButtonSecondary: 'bg-black/50 hover:bg-black/70 neon-glow'
     },
     nature: {
       nav: 'from-green-900 via-emerald-800 to-teal-700',
@@ -94,7 +105,9 @@ export default function Navbar() {
       logoPrimary: 'from-green-300 via-teal-200 to-emerald-100',
       logoSecondary: 'from-teal-200 to-emerald-100',
       dropdownText: 'text-green-100',
-      dropdownActiveText: 'text-green-100'
+      dropdownActiveText: 'text-green-100',
+      authButton: 'bg-teal-600 hover:bg-teal-700 text-white',
+      authButtonSecondary: 'bg-emerald-800/70 hover:bg-emerald-800 text-white'
     },
     retro: {
       nav: 'from-amber-900 via-orange-800 to-yellow-700',
@@ -109,7 +122,9 @@ export default function Navbar() {
       logoPrimary: 'from-amber-300 via-orange-200 to-yellow-100',
       logoSecondary: 'from-yellow-200 to-orange-100',
       dropdownText: 'text-yellow-100',
-      dropdownActiveText: 'text-yellow-100'
+      dropdownActiveText: 'text-yellow-100',
+      authButton: 'bg-amber-600 hover:bg-amber-700 text-white',
+      authButtonSecondary: 'bg-orange-800/70 hover:bg-orange-800 text-white'
     },
   };
 
@@ -292,109 +307,138 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Profile Menu - opens on hover, focus, or click, and closes on outside click */}
-              <div
-                className="relative ml-2 use-outside-click"
-                onMouseEnter={() => setIsProfileMenuOpen(true)}
-                onMouseLeave={() => setIsProfileMenuOpen(false)}
-                onFocus={() => setIsProfileMenuOpen(true)}
-                onBlur={() => setIsProfileMenuOpen(false)}
-                tabIndex={0}
-              >
-                <button
-                  onClick={() => setIsProfileMenuOpen((open) => !open)}
-                  className={`
-                    flex items-center justify-center p-2 rounded-full
-                    transition-colors duration-200
-                    ${style.button}
-                    ${isNeon ? 'neon-glow' : ''}
-                    hover:scale-110
-                  `}
-                  aria-expanded={isProfileMenuOpen}
-                  aria-haspopup="true"
+              {/* Conditional rendering based on login status */}
+              {isLoggedIn ? (
+                // Profile Menu for logged in users
+                <div
+                  className="relative ml-2 use-outside-click"
+                  onMouseEnter={() => setIsProfileMenuOpen(true)}
+                  onMouseLeave={() => setIsProfileMenuOpen(false)}
+                  onFocus={() => setIsProfileMenuOpen(true)}
+                  onBlur={() => setIsProfileMenuOpen(false)}
+                  tabIndex={0}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </button>
-         {isProfileMenuOpen && (
-  <div className={`absolute right-0 mt-2 w-48 origin-top-right rounded-xl shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 ${style.menu}`}>
-    {/* Add close button at the top-right corner */}
-    <button 
-      onClick={() => setIsProfileMenuOpen(false)}
-      className={`
-        absolute top-2 right-2 p-1 rounded-full
-        transition-colors duration-200
-        ${isNeon ? 'neon-glow' : `hover:bg-gray-700/40 ${style.dropdownText}`}
-        hover:scale-110
-      `}
-      aria-label="Close menu"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
-    
-    <div className="py-1 pt-3"> {/* Increased top padding to accommodate close button */}
-      <Link
-        href="/profile"
-        className={`
-          block px-4 py-2 text-sm
-          ${style.dropdownText}
-          hover:bg-gray-800 hover:text-white
-          transition-colors duration-200
-        `}
-        onClick={() => setIsProfileMenuOpen(false)}
-      >
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.657 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          My Profile
-        </div>
-      </Link>
-                      <Link
-                        href="/settings"
-                        className={`
-                          block px-4 py-2 text-sm
-                          ${style.dropdownText}
-                          hover:bg-gray-800 hover:text-white
-                          transition-colors duration-200
-                        `}
+                  <button
+                    onClick={() => setIsProfileMenuOpen((open) => !open)}
+                    className={`
+                      flex items-center justify-center p-2 rounded-full
+                      transition-colors duration-200
+                      ${style.button}
+                      ${isNeon ? 'neon-glow' : ''}
+                      hover:scale-110
+                    `}
+                    aria-expanded={isProfileMenuOpen}
+                    aria-haspopup="true"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </button>
+                  {isProfileMenuOpen && (
+                    <div className={`absolute right-0 mt-2 w-48 origin-top-right rounded-xl shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 ${style.menu}`}>
+                      <button 
                         onClick={() => setIsProfileMenuOpen(false)}
-                      >
-                        <div className="flex items-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19a7 7 0 100-14 7 7 0 000 14z" />
-                          </svg>
-                          Settings
-                        </div>
-                      </Link>
-                      <div className="border-t border-gray-700/50 my-1"></div>
-                      <button
-                        onClick={() => {
-                          // Add your logout logic here
-                          setIsProfileMenuOpen(false);
-                        }}
                         className={`
-                          w-full text-left px-4 py-2 text-sm
-                          ${style.dropdownText}
-                          hover:bg-gray-800 hover:text-white
+                          absolute top-2 right-2 p-1 rounded-full
                           transition-colors duration-200
-                          flex items-center
+                          ${isNeon ? 'neon-glow' : `hover:bg-gray-700/40 ${style.dropdownText}`}
+                          hover:scale-110
                         `}
+                        aria-label="Close menu"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
-                        Log Out
                       </button>
+                      
+                      <div className="py-1 pt-3">
+                        <Link
+                          href="/profile"
+                          className={`
+                            block px-4 py-2 text-sm
+                            ${style.dropdownText}
+                            hover:bg-gray-800 hover:text-white
+                            transition-colors duration-200
+                          `}
+                          onClick={() => setIsProfileMenuOpen(false)}
+                        >
+                          <div className="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.657 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            My Profile
+                          </div>
+                        </Link>
+                        <Link
+                          href="/settings"
+                          className={`
+                            block px-4 py-2 text-sm
+                            ${style.dropdownText}
+                            hover:bg-gray-800 hover:text-white
+                            transition-colors duration-200
+                          `}
+                          onClick={() => setIsProfileMenuOpen(false)}
+                        >
+                          <div className="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19a7 7 0 100-14 7 7 0 000 14z" />
+                            </svg>
+                            Settings
+                          </div>
+                        </Link>
+                        <div className="border-t border-gray-700/50 my-1"></div>
+                        <button
+                          onClick={() => {
+                            setIsLoggedIn(false); // Log out user
+                            setIsProfileMenuOpen(false);
+                          }}
+                          className={`
+                            w-full text-left px-4 py-2 text-sm
+                            ${style.dropdownText}
+                            hover:bg-gray-800 hover:text-white
+                            transition-colors duration-200
+                            flex items-center
+                          `}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                          </svg>
+                          Log Out
+                        </button>
+                      </div>
                     </div>
-                  </div>
                   )}
-                
-              </div>
+                </div>
+              ) : (
+                // Login/Sign up buttons for logged out users
+                <div className="flex items-center space-x-2 ml-4">
+                  <Link
+                    href="/login"
+                    className={`
+                      px-4 py-2 rounded-lg text-sm font-medium
+                      transition-colors duration-200
+                      ${style.authButton}
+                      ${isNeon ? 'neon-glow' : ''}
+                      hover:scale-105
+                    `}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className={`
+                      px-4 py-2 rounded-lg text-sm font-medium
+                      transition-colors duration-200
+                      ${style.authButtonSecondary}
+                      ${isNeon ? 'neon-glow' : ''}
+                      hover:scale-105
+                    `}
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
             </div>
 
             {/* Mobile menu button */}
@@ -461,6 +505,39 @@ export default function Navbar() {
                   ))}
                 </div>
               </div>
+
+              {/* Mobile Auth Buttons */}
+              {!isLoggedIn && (
+                <div className="pt-4 border-t border-blue-800/50">
+                  <h4 className={`px-4 py-2 text-base font-semibold ${isNeon ? 'neon-glow' : style.text}`}>Account</h4>
+                  <div className="flex space-x-2 mt-2">
+                    <Link
+                      href="/login"
+                      className={`
+                        flex-1 px-4 py-3 rounded-lg text-center font-medium
+                        transition-colors duration-200
+                        ${style.authButton}
+                        ${isNeon ? 'neon-glow' : ''}
+                      `}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/signup"
+                      className={`
+                        flex-1 px-4 py-3 rounded-lg text-center font-medium
+                        transition-colors duration-200
+                        ${style.authButtonSecondary}
+                        ${isNeon ? 'neon-glow' : ''}
+                      `}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}

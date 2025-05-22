@@ -7,7 +7,7 @@ export default function ImageUploader({ fieldName }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
   const MAX_SIZE_MB = 10;
-  const isSingleImageField = fieldName === 'logo' || fieldName === 'upper'; // Add other single-image fields here
+  const isSingleImageField = fieldName === 'branch logo' || fieldName === 'branch logo'; // Simplified for clarity
 
   useEffect(() => {
     if (!fieldName) return;
@@ -39,28 +39,27 @@ export default function ImageUploader({ fieldName }) {
       return;
     }
 
-    // Validate single image fields
-    if (isSingleImageField) {
-      if (files.length > 1) {
-        setError(`Only one image allowed for ${fieldName}`);
-        return;
-      }
-      if (images.length > 0) {
-        setError(`Replace the existing ${fieldName} image instead`);
-        return;
-      }
+    // For single image fields (like branch logo), only allow one file
+    if (isSingleImageField && files.length > 1) {
+      setError(`Only one image allowed for ${fieldName}`);
+      return;
     }
 
     try {
       setUploading(true);
       setError('');
 
-      // Process uploads
+      // Process uploads - for single image fields, we'll replace the existing image
       const uploadedUrls = [];
       for (const file of files) {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('field_name', fieldName);
+
+        // If it's a single image field and we already have an image, include the old URL for replacement
+        if (isSingleImageField && images.length > 0) {
+          formData.append('old_image_url', images[0]);
+        }
 
         const res = await fetch('/api/settings/update-branch-field/upload-image', {
           method: 'POST',
@@ -72,7 +71,7 @@ export default function ImageUploader({ fieldName }) {
         uploadedUrls.push(data.url);
       }
 
-      // Update state based on field type
+      // Update state - replace for single image, append for multiple
       if (isSingleImageField) {
         setImages(uploadedUrls.slice(0, 1)); // Only keep first image
       } else {
@@ -104,13 +103,13 @@ export default function ImageUploader({ fieldName }) {
   return (
     <div className="p-4 rounded-lg shadow-lg mb-4 bg-gradient-to-br from-gray-800 via-gray-700 to-blue-900">
       <label className="block mb-3 text-sm font-medium text-white">
-        {isSingleImageField ? `Upload ${fieldName} (Single Image)` : 'Upload Images (Multiple Allowed)'}
-        <span className="ml-2 text-xs text-gray-400">Max {MAX_SIZE_MB}MB per image</span>
+        {fieldName}
+        <span className="ml-2 text-xs text-gray-400">Max {MAX_SIZE_MB}MB {isSingleImageField ? '(Single Image)' : ''}</span>
       </label>
       
       <div className="flex items-center gap-3 mb-4">
         <label className="px-4 py-2 rounded bg-gradient-to-r from-blue-700 to-blue-800 text-white font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg active:scale-95 cursor-pointer">
-          {uploading ? 'Uploading...' : 'Select Files'}
+          {uploading ? 'Uploading...' : 'Select File'}
           <input
             type="file"
             accept="image/*"
@@ -132,7 +131,7 @@ export default function ImageUploader({ fieldName }) {
       )}
 
       {images.length > 0 ? (
-        <div className={`grid ${isSingleImageField ? 'grid-cols-1' : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'} gap-4`}>
+        <div className="grid grid-cols-1 gap-4">
           {images.map((url) => (
             <div key={url} className="relative group">
               <img 
@@ -151,16 +150,13 @@ export default function ImageUploader({ fieldName }) {
               </button>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
                 <p className="text-xs text-white truncate">{url.split('/').pop()}</p>
-                <p className="text-xs text-gray-300">
-                  {isSingleImageField ? 'Main Image' : `Image ${images.indexOf(url) + 1}`}
-                </p>
               </div>
             </div>
           ))}
         </div>
       ) : (
         <div className="flex items-center justify-center h-40 rounded-lg border-2 border-dashed border-gray-600 text-gray-400">
-          {isSingleImageField ? `No ${fieldName} image uploaded` : 'No images uploaded yet'}
+          No {fieldName} uploaded yet
         </div>
       )}
     </div>
