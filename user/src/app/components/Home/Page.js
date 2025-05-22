@@ -187,7 +187,7 @@ export default function HomePage() {
                 transition={{ delay: 0.3 }}
                 className="text-4xl md:text-6xl font-bold text-white mb-4"
               >
-                {branchData['branch short name']?.content || 'IEEE CUSB'}{' '}
+                {/* {branchData['branch short name']?.content || 'IEEE CUSB'}{' '} */}
                 <span className="text-blue-400">{branchData['branch name']?.content || 'Chandigarh University'}</span>
               </motion.h1>
               <motion.p
@@ -196,7 +196,7 @@ export default function HomePage() {
                 transition={{ delay: 0.5 }}
                 className="text-xl md:text-2xl text-white/90 max-w-2xl"
               >
-                Pioneering innovation and excellence in technology since {branchData['branch age']?.content || '2014'}
+                Pioneering innovation and excellence in technology 
               </motion.p>
             </div>
 

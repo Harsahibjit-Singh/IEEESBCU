@@ -22,6 +22,7 @@ export async function POST(req) {
 }
 
 
+
 // | Search type     | Example URL                                    |
 // | --------------- | ---------------------------------------------- |
 // | Search by name  | `/api/executives/search?name=har`              |
