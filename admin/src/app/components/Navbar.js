@@ -137,14 +137,13 @@ export default function Navbar() {
               <NavLink href="/dashboard" active={activeLink === '/dashboard'} style={style}>
                 Dashboard
               </NavLink>
-              <NavLink href="/dashboard/members" active={activeLink === '/dashboard/members'} style={style}>
-                Members
+              <NavLink href="/applications" active={activeLink === '/applications'} style={style}>
+                Applications
               </NavLink>
               <NavLink href="/dashboard/events" active={activeLink === '/events'} style={style}>
                 Events
               </NavLink>
               <NavLink href="/settings" active={activeLink === '/settings'} style={style}>
-              <NavLink href="/dashboard/settings" active={activeLink === '/settings'} style={style}>
                 Settings
               </NavLink>
 
@@ -255,8 +254,8 @@ export default function Navbar() {
               <MobileNavLink href="/dashboard" active={activeLink === '/dashboard'} style={style}>
                 Dashboard
               </MobileNavLink>
-              <MobileNavLink href="/dashboard/members" active={activeLink === '/dashboard/members'} style={style}>
-                Members
+              <MobileNavLink href="/applications" active={activeLink === '/applications'} style={style}>
+                Applications
               </MobileNavLink>
               <MobileNavLink href="/dashboard/events" active={activeLink === '/dashboard/events'} style={style}>
                 Events
