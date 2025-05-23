@@ -437,30 +437,42 @@ export default function HomePage() {
             </div>
           </div>
         </motion.section>
-
-        {/* Footer */}
-        <footer className={`mt-20 pt-8 pb-12 border-t ${theme === 'light' ? 'border-blue-200' : 'border-gray-700'}`}>
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center mb-6 md:mb-0">
-              {branchData['branch logo']?.images?.[0] && (
-                <img
-                  src={branchData['branch logo'].images[0]}
-                  alt="IEEE Logo"
-                  className="h-10 mr-4"
-                />
-              )}
-              <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-300'}>
-                {branchData['branch name']?.content || 'IEEE Chandigarh University Student Branch'}
-              </span>
-            </div>
-            <div className="flex space-x-6">
-              {/* Social icons here */}
-            </div>
-          </div>
-          <p className={theme === 'light' ? 'text-center text-gray-500 mt-8 text-sm' : 'text-center text-gray-400 mt-8 text-sm'}>
-            © {new Date().getFullYear()} {branchData['branch name']?.content || 'IEEE Chandigarh University Student Branch'}. All rights reserved.
-          </p>
-        </footer>
+<footer className={`mt-20 pt-8 pb-12 border-t ${theme === 'light' ? 'border-blue-200' : 'border-gray-700'}`}>
+  <div className="container mx-auto px-4">
+    <div className="flex flex-col md:flex-row justify-between">
+      <div className="flex flex-col md:flex-row md:items-center mb-8 md:mb-0">
+        <div className="flex items-center mb-6 md:mb-0 md:mr-12">
+          <img
+            src="/image.png"
+            alt="IEEE Logo"
+            className="h-10 mr-4"
+          />
+          <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-300'}>Chandigarh University Student Branch</span>
+        </div>
+        
+        {/* External Links Section */}
+        <div className="flex flex-col space-y-2">
+          <h3 className={`font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>External Links</h3>
+          <a 
+            href="/executive" 
+            className={`transition-all duration-200 hover:text-blue-400 hover:drop-shadow-glow ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}
+          >
+            Executive
+          </a>
+          {/* Add more links here if needed */}
+        </div>
+      </div>
+      
+      <div className="flex space-x-6">
+        {/* Social icons here */}
+      </div>
+    </div>
+    
+    <p className={`text-center mt-8 text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+      © {new Date().getFullYear()} IEEE Chandigarh University Student Branch. All rights reserved.
+    </p>
+  </div>
+</footer>
       </div>
     </div>
   );
